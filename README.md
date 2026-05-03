@@ -179,3 +179,58 @@ This ensures the project is not just theoretical, but **operational**.
 
 The project is organized to reflect professional standards:
 
+credit-risk-scoring/
+│
+├── data/ # Raw and processed data
+├── notebooks/ # Exploratory analysis
+├── src/ # Core pipeline (preprocessing, training, prediction)
+├── api/ # FastAPI service
+├── app/ # Streamlit interface
+├── models/ # Saved models
+├── reports/ # Results and metrics
+├── tests/ # Unit tests
+├── requirements.txt
+└── README.md
+
+---
+
+## 🛠️ Technologies Used
+
+- Python (core language)
+- Pandas / NumPy (data manipulation)
+- Scikit-learn (modeling)
+- XGBoost / LightGBM (advanced models)
+- SHAP (explainability)
+- FastAPI (API deployment)
+- Streamlit (interactive app)
+
+---
+
+## 📖 Key Takeaways
+
+This project demonstrates:
+
+- A strong understanding of **credit risk modeling**
+- The ability to build **end-to-end machine learning systems**
+- The integration of **business logic with data science**
+- A focus on **interpretability and deployment**
+
+It reflects real-world practices used in banking, fintech, and risk analytics.
+
+---
+
+## 👤 Authors
+
+**Hilaire Touyem**  
+Data Scientist | Machine Learning | Optimization  
+HEC Montréal
+
+**Platini Agouanet**
+Data Scientist...
+
+---
+
+## ⭐ Final Note
+
+This project is designed to go beyond a simple ML model.  
+It provides a **complete framework for decision-making in credit risk**, bridging the gap between **data science and financial impact**.
