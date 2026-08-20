@@ -1,13 +1,9 @@
 
-pandas
-numpy
-scikit-learn
 matplotlib
 jupyter
 ipykernel
 pyarrow
 scorecardpy
-joblib
 streamlit==1.62.0
 numpy==2.5.1
 pandas==3.0.5
