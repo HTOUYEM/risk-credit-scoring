@@ -15,14 +15,6 @@ The project combines predictive modeling, interpretability and credit risk analy
        width="100%">
 </p>
 
-## Project Overview
-
-Credit scoring requires balancing **predictive performance, interpretability, and reliable risk estimation**. This project addresses that challenge through two complementary methodologies built from the same credit-risk problem.
-
-The first follows a **traditional scorecard framework**, emphasizing transparency through Information Value (IV), WOE transformation, logistic regression, and characteristic-level points. The second explores a broader **machine learning framework**, where multiple candidate models are developed and compared using discrimination, probability quality, and calibration criteria.
-
-The selected ML model produces a borrower-level **Probability of Default (PD)**, which is translated into a credit score and risk classification. SHAP explanations are then used to identify the factors driving each individual prediction, and the complete ML scoring pipeline is operationalized through an interactive Streamlit application.
-
 ## Project Overview & Objective
 
 Financial institutions need to estimate borrower default risk while maintaining **predictive performance, interpretability, and reliable risk estimation**. This project addresses this challenge by developing two complementary approaches to borrower-level **Probability of Default (PD)** estimation and credit scoring.
