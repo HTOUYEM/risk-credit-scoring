@@ -1,236 +1,228 @@
-# 💳 Credit Risk Scoring System — From Data to Decision (PD, LGD, EAD, Expected Loss)
+# Credit Risk Scoring
 
-## 📌 Introduction
+## Traditional Scorecard & Explainable Machine Learning
 
-In financial institutions, one of the most critical challenges is to assess the risk associated with lending money to clients. This project proposes a complete and practical solution to this problem by building a **credit risk scoring system** grounded in real-world methodologies used in banking and risk management.
+An end-to-end credit risk analytics project comparing two complementary approaches to Probability of Default (PD) estimation and credit scoring:
 
-The objective is not only to predict whether a client will default, but to **quantify the financial impact of that default** and provide **interpretable, actionable insights**.
+- a **traditional credit scorecard**, based on Information Value (IV), Weight of Evidence (WOE), logistic regression and point-based scoring;
+- an **explainable machine learning approach**, based on feature engineering, model benchmarking and selection, PD-based credit scoring, and borrower-level SHAP explanations.
 
-This is achieved through the estimation of three key components:
+The project combines predictive modeling, interpretability and credit risk analytics within a reproducible framework. The selected machine learning pipeline is operationalized through an interactive Streamlit application.
 
-- **PD (Probability of Default)**: likelihood that a borrower will default  
-- **LGD (Loss Given Default)**: proportion of loss if default occurs  
-- **EAD (Exposure at Default)**: total exposure at the time of default  
+<p align="center">
+  <img src="assets/credit_risk_scoring_overview.png"
+       alt="Credit Risk Scoring — Traditional Scorecard and Explainable Machine Learning"
+       width="100%">
+</p>
 
-These components are combined to compute the most important risk metric:
+## Project Overview
 
-> **Expected Loss (EL) = PD × LGD × EAD**
+Credit scoring requires balancing **predictive performance, interpretability, and reliable risk estimation**. This project addresses that challenge through two complementary methodologies built from the same credit-risk problem.
 
----
+The first follows a **traditional scorecard framework**, emphasizing transparency through Information Value (IV), WOE transformation, logistic regression, and characteristic-level points. The second explores a broader **machine learning framework**, where multiple candidate models are developed and compared using discrimination, probability quality, and calibration criteria.
 
-## 🎯 Problem Statement
+The selected ML model produces a borrower-level **Probability of Default (PD)**, which is translated into a credit score and risk classification. SHAP explanations are then used to identify the factors driving each individual prediction, and the complete ML scoring pipeline is operationalized through an interactive Streamlit application.
 
-The core problem is formulated as a **supervised learning task**:
+## Project Overview & Objective
 
-Given borrower characteristics \( X \), predict:
+Financial institutions need to estimate borrower default risk while maintaining **predictive performance, interpretability, and reliable risk estimation**. This project addresses this challenge by developing two complementary approaches to borrower-level **Probability of Default (PD)** estimation and credit scoring.
 
-- \( Y = 1 \) if the borrower defaults  
-- \( Y = 0 \) otherwise  
+A **traditional credit scorecard** emphasizes transparency through IV/WOE-based modeling, logistic regression, and characteristic-level points, while an **explainable machine learning framework** benchmarks multiple models using discrimination, probability quality, and calibration. The selected ML model translates predicted PD into a credit score and risk classification, with SHAP providing borrower-level explanations.
 
-The goal is to estimate:
+## End-to-End Methodology
 
-> **PD = P(Y = 1 | X)**
+Both approaches share a common data foundation before branching into two complementary credit-scoring frameworks.
 
-Beyond classification, the project extends this prediction into a **financial risk estimation framework**, which is closer to real-world industry practices.
+**Common pipeline**
 
----
+`Raw Lending Data → Data Cleaning → Target Definition → Leakage Control → Train / Validation / Test Strategy`
 
-## 📊 Data Sources
+| Traditional Credit Scorecard | Explainable Machine Learning |
+|---|---|
+| Binning & WOE analysis | Credit-risk feature engineering |
+| IV-based variable selection | Model-specific preprocessing & encoding |
+| Logistic regression | Multiple candidate models |
+| Characteristic-level points | Model benchmarking & selection |
+| Point-based credit score | PD-based credit score & risk grade |
+| Intrinsic interpretability | Borrower-level SHAP explanations |
 
-The models are trained using well-known public datasets:
 
-- **German Credit Dataset**
-- **Home Credit Default Risk (Kaggle)**
+## Traditional Credit Scorecard
 
-These datasets include a rich set of variables describing borrower profiles:
+The traditional approach prioritizes **transparency and business interpretability**, allowing the contribution of borrower characteristics to be traced directly to the final score.
 
-- Financial variables (income, loan amount, interest rate)
-- Behavioral indicators (credit usage, delinquencies)
-- Demographic information (employment, housing)
+**Modeling pipeline**
 
----
+`Candidate Variables → Binning & WOE Analysis → IV-based Variable Selection → Logistic Regression → Scorecard Scaling → Characteristic Points → Credit Score`
 
-## ⚠️ Important: Avoiding Data Leakage
+Variables are grouped into risk-homogeneous bins and transformed using **Weight of Evidence (WOE)**, while **Information Value (IV)** supports the selection of discriminatory predictors. Logistic regression then estimates default risk, and its coefficients are converted into characteristic-level points to produce an interpretable credit score.
 
-A critical step in credit modeling is ensuring that the model does not use information that would not be available at decision time.
+## Explainable Machine Learning Approach
 
-For example, variables such as:
+The machine learning approach combines **credit-risk feature engineering, model-specific preprocessing, and a benchmark-and-challenger framework** to estimate borrower-level PD.
 
-- loan_status  
-- recoveries  
-- total payments  
+**Modeling pipeline**
 
-are removed because they contain **future information**.
+`Feature Engineering → Preprocessing → Imbalance Analysis → Model Benchmarking → Hyperparameter Tuning → Validation-Based Selection → Final PD Model`
 
-This ensures that the model remains **realistic and deployable**.
+Class imbalance strategies—including the original distribution, class weighting, and random oversampling—are evaluated with particular attention to probability reliability. Candidate models are then tuned and compared using three complementary dimensions:
 
----
+| Dimension | Metrics |
+|---|---|
+| **Discrimination** | ROC-AUC, Gini, KS |
+| **Probability Quality** | Brier Score, Log Loss |
+| **Calibration** | Predicted PD vs. Observed Default Rate |
 
-## ⚙️ Methodology
+Model selection is performed on validation data, while the external test set remains untouched until final evaluation.
 
-### 1. Data Preprocessing
 
-The raw data is first transformed into a clean and usable format:
+## Model Selection & Results
 
-- Handling missing values (imputation strategies)
-- Encoding categorical variables (one-hot encoding)
-- Scaling numerical features
-- Splitting into training and testing sets
+Candidate models were compared on the same validation sample across discrimination and probability-quality metrics.
 
-This step ensures that the models can learn effectively without bias or noise.
+| Model | ROC-AUC ↑ | Gini ↑ | KS ↑ | Brier ↓ | Log Loss ↓ |
+|---|---:|---:|---:|---:|---:|
+| **Histogram Gradient Boosting** | **0.7055** | **0.4110** | **0.2995** | **0.0918** | **0.3182** |
+| Random Forest | 0.7002 | 0.4004 | 0.2922 | 0.0922 | 0.3199 |
+| Logistic Regression — L1 | 0.6927 | 0.3854 | 0.2819 | 0.0927 | 0.3221 |
+| Decision Tree | 0.6778 | 0.3556 | 0.2589 | 0.0935 | 0.3254 |
 
----
+**Histogram Gradient Boosting** was selected as the champion model, achieving the strongest discrimination and the best probability-quality metrics among the evaluated candidates.
 
-### 2. Feature Engineering
+### Final Out-of-Sample Performance
 
-Feature engineering plays a key role in improving model performance.
+The frozen model specification was refitted on the complete development sample and evaluated once on the untouched test set.
 
-New variables are created to better capture risk:
+| Stage | ROC-AUC | Gini | KS | Brier | Log Loss | Mean PD | Default Rate |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Validation | 0.7055 | 0.4110 | 0.2995 | 0.0918 | 0.3182 | 10.93% | 10.93% |
+| **Test** | **0.7020** | **0.4039** | **0.2973** | **0.0920** | **0.3191** | **10.91%** | **10.93%** |
 
-- Debt-to-Income ratio (financial pressure indicator)
-- Employment length (stability proxy)
-- Credit behavior indicators
+Performance remained stable out of sample, while the test mean predicted PD (**10.91%**) closely matched the observed default rate (**10.93%**).
 
-These transformations allow the model to better reflect **economic intuition**.
+## From Probability of Default to Credit Score
 
----
+The champion model estimates a borrower-level **Probability of Default (PD)**, which is transformed into intuitive risk indicators through a dedicated scoring layer.
 
-### 3. Modeling Strategy
+**Scoring pipeline**
 
-Several models are evaluated to compare performance and robustness:
+`Predicted PD → Credit Score → Model Risk Grade → Overall Risk Level`
 
-- Logistic Regression (baseline, interpretable)
-- Random Forest (non-linear relationships)
-- XGBoost / LightGBM (state-of-the-art performance)
-- Support Vector Machine (margin-based learning)
+A lower predicted PD corresponds to a higher credit score, which is then mapped to ordered risk categories for easier interpretation.
+## Borrower-Level Explainability with SHAP
 
-This multi-model approach ensures that we identify the best trade-off between **performance and interpretability**.
+While the traditional scorecard is intrinsically interpretable, the ML model uses **SHAP (SHapley Additive exPlanations)** to explain individual predictions.
 
----
+> **Why did this borrower receive this predicted PD?**
 
-### 4. Model Evaluation
+SHAP decomposes each prediction relative to a baseline, identifying and ranking the borrower characteristics that push predicted risk **higher or lower**.
 
-The models are evaluated using metrics aligned with risk management objectives:
+`Baseline Risk + Feature Contributions → Borrower-Specific Prediction`
 
-- **ROC-AUC**: ability to rank risky clients correctly  
-- **F1-score**: balance between precision and recall  
-- **Precision / Recall**: important for risk decisions  
-- **Confusion Matrix**: detailed error analysis  
+The Streamlit application translates these contributions into readable risk drivers, a visual explanation, and dynamic tables tailored to each borrower.
 
-The focus is not only accuracy, but also **business impact**.
+> **Interpretation note:** SHAP explains the model's prediction, not causal relationships.
 
----
+### Example of a Borrower-Level Explanation
 
-## 🔍 Model Explainability (SHAP)
+<p align="center">
+  <img src="assets/shap_explanation.png"
+       alt="Borrower-level SHAP explanation showing factors increasing and reducing predicted credit risk"
+       width="90%">
+</p>
 
-In finance, predictions must be explainable.
+## Streamlit Application
 
-This project integrates **SHAP (SHapley Additive Explanations)** to:
+The selected ML pipeline is operationalized through an interactive **Streamlit application**, providing an end-to-end borrower-level credit-risk assessment.
 
-- Identify the most important features globally  
-- Explain individual predictions (client-level decisions)  
-- Provide transparency for regulatory and business needs  
+`Borrower Inputs → PD Prediction → Credit Score & Risk Classification → SHAP Explanation`
 
-This transforms the model from a "black box" into a **decision-support tool**.
+The application combines model prediction, scoring, risk visualization, and borrower-specific explainability within a single interface.
 
----
+### Example of the Credit Risk Assessment
 
-## 💰 Credit Risk Modeling
+<p align="center">
+  <img src="assets/scoring_results.png"
+       alt="Credit risk assessment showing Probability of Default, credit score, risk grade and risk level"
+       width="90%">
+</p>
 
-The true value of this project lies in connecting machine learning predictions to financial risk.
+**Live Application:** _link to be added after deployment_
 
-Each client is evaluated using:
 
-- **PD** → predicted by the model  
-- **LGD** → estimated or assumed (e.g., 60%)  
-- **EAD** → loan exposure  
+## Repository Structure & Reproducibility
 
-These are combined into:
-
-> **Expected Loss = PD × LGD × EAD**
-
-This metric allows institutions to:
-
-- Quantify risk in monetary terms  
-- Prioritize high-risk clients  
-- Optimize lending strategies  
-
----
-
-## 🚀 Deployment
-
-To make the system usable in practice, the project includes deployment components:
-
-### API (FastAPI)
-- Real-time prediction service  
-- Accepts client data as input  
-- Returns PD, LGD, EAD, and Expected Loss  
-
-### Web Application (Streamlit)
-- Interactive dashboard  
-- Allows non-technical users to assess risk  
-- Visualizes predictions and explanations  
-
-This ensures the project is not just theoretical, but **operational**.
-
----
-
-## 📁 Project Structure
-
-The project is organized to reflect professional standards:
-
-credit-risk-scoring/
-│
-├── data/ # Raw and processed data
-├── notebooks/ # Exploratory analysis
-├── src/ # Core pipeline (preprocessing, training, prediction)
-├── api/ # FastAPI service
-├── app/ # Streamlit interface
-├── models/ # Saved models
-├── reports/ # Results and metrics
-├── tests/ # Unit tests
-├── requirements.txt
+```text
+risk-credit-scoring-new/
+├── app.py                         # Streamlit credit-risk application
+├── assets/                        # README figures and application screenshots
+├── data/
+│   ├── raw/                       # Raw data (not versioned)
+│   ├── interim/                   # Intermediate datasets
+│   └── processed/                 # Modeling/deployment artifacts
+├── models/
+│   └── pd/                        # Trained PD models and model results
+├── notebooks/
+│   ├── 01_Master_Dataset_Construction.ipynb
+│   ├── 02_PD_Dataset_Construction.ipynb
+│   ├── 03_PD_Model_Development.ipynb
+│   └── 04_PD_Credit_Scoring.ipynb
+├── src/                           # Reusable modeling and application modules
+├── .streamlit/
+│   └── config.toml                # Streamlit configuration
+├── requirements.txt               # Application dependencies
+├── requirements-dev.txt           # Notebook/development dependencies
 └── README.md
+```
 
----
+### Running the Application
 
-## 🛠️ Technologies Used
+```bash
+git clone <repository-url>
+cd risk-credit-scoring-new
 
-- Python (core language)
-- Pandas / NumPy (data manipulation)
-- Scikit-learn (modeling)
-- XGBoost / LightGBM (advanced models)
-- SHAP (explainability)
-- FastAPI (API deployment)
-- Streamlit (interactive app)
+python -m venv .venv
+source .venv/Scripts/activate
 
----
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m streamlit run app.py
+```
 
-## 📖 Key Takeaways
+For notebook development:
 
-This project demonstrates:
+```bash
+python -m pip install -r requirements-dev.txt
+```
 
-- A strong understanding of **credit risk modeling**
-- The ability to build **end-to-end machine learning systems**
-- The integration of **business logic with data science**
-- A focus on **interpretability and deployment**
+> **Data note:** large raw and processed datasets are excluded from version control.
 
-It reflects real-world practices used in banking, fintech, and risk analytics.
 
----
+## Contributors
 
-## 👤 Authors
+This project was developed collaboratively through two complementary credit-risk modeling approaches:
 
-**Hilaire Touyem**  
-Data Scientist | Machine Learning | Optimization  
-HEC Montréal
+- **Traditional Credit Scorecard:** Platini Agouanet 
+- **Explainable Machine Learning & Application:** Hilaire Touyem
 
-**Platini Agouanet**
-Data Scientist...
+Both approaches contribute to the same objective: building interpretable and actionable credit-risk scoring frameworks.
 
----
+## Credit Risk & Tech Stack
 
-## ⭐ Final Note
+**Credit Risk:** Probability of Default (PD) · Credit Scoring · IV/WOE · Risk Ranking · Model Calibration · Model Validation · Explainability
 
-This project is designed to go beyond a simple ML model.  
-It provides a **complete framework for decision-making in credit risk**, bridging the gap between **data science and financial impact**.
+**Modeling:** Logistic Regression · Decision Tree · Random Forest · Histogram Gradient Boosting · SHAP
+
+**Tech:** Python · pandas · NumPy · scikit-learn · Matplotlib · Streamlit · Joblib
+
+## Limitations & Future Work
+
+This project focuses on **Probability of Default (PD) and credit scoring** and is intended for analytical and educational purposes rather than production lending decisions. Production use would require additional model governance, fairness assessment, regulatory validation, and ongoing performance and data-drift monitoring.
+
+Future work will extend the framework toward a more comprehensive credit-risk modeling system through **Loss Given Default (LGD)** and **Exposure at Default (EAD)** modeling, enabling the estimation of:
+
+**Expected Loss = PD × LGD × EAD**
+
+Further extensions could explore the integration of these risk components within broader **IFRS 9 credit-risk modeling considerations**, including expected credit loss assessment and model monitoring.
+
+> **Disclaimer:** The scores, risk grades, and predictions produced by this project should not be interpreted as actual lending recommendations.
