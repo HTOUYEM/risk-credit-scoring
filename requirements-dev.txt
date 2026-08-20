@@ -1,0 +1,6 @@
+# Credit Risk Scoring - Development & Notebook Dependencies
+
+-r requirements.txt
+
+ipykernel==7.3.0
+imbalanced-learn==0.14.2

@@ -80,3 +80,45 @@ def load_model_artifacts(
         best_model,
         best_params,
     )
+
+
+# =============================================================================
+# Final PD Model Artifacts
+# =============================================================================
+
+from joblib import dump
+
+
+def save_final_pd_artifacts(
+    model,
+    performance_summary,
+    model_dir,
+):
+    """
+    Save the final PD model and its performance summary.
+    """
+
+    model_path = (
+        model_dir
+        / "final_pd_model.joblib"
+    )
+
+    performance_path = (
+        model_dir
+        / "final_pd_performance.csv"
+    )
+
+    dump(
+        model,
+        model_path,
+    )
+
+    performance_summary.to_csv(
+        performance_path,
+        index=False,
+    )
+
+    return {
+        "model_path": model_path,
+        "performance_path": performance_path,
+    }
