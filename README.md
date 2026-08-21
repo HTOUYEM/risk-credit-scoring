@@ -145,33 +145,43 @@ The application combines model prediction, scoring, risk visualization, and borr
 ## Repository Structure & Reproducibility
 
 ```text
-risk-credit-scoring-new/
+risk-credit-scoring/
 ├── app.py                         # Streamlit credit-risk application
-├── assets/                        # README figures and application screenshots
+├── assets/                        # Figures and application screenshots
+│
 ├── data/
-│   ├── raw/                       # Raw data (not versioned)
+│   ├── raw/                       # Original Lending Club data
 │   ├── interim/                   # Intermediate datasets
-│   └── processed/                 # Modeling/deployment artifacts
+│   └── processed/                 # Modeling and deployment datasets
+│
 ├── models/
-│   └── pd/                        # Trained PD models and model results
-├── notebooks/
-│   ├── 01_Master_Dataset_Construction.ipynb
-│   ├── 02_PD_Dataset_Construction.ipynb
-│   ├── 03_PD_Model_Development.ipynb
-│   └── 04_PD_Credit_Scoring.ipynb
-├── src/                           # Reusable modeling and application modules
+│   ├── pd/                        # Trained PD models and evaluation results
+│   └── pd_binning/                # WoE / logistic scorecard artifacts
+│
+├── notebooks/                     # Main PD modeling workflow
+├── notebooks_LR/                  # WoE / logistic regression workflow
+│
+├── src/
+│   ├── features/                  # Feature engineering and WoE utilities
+│   ├── modeling/                  # Model evaluation utilities
+│   └── scorings/                  # Scorecard prediction utilities
+│
 ├── .streamlit/
 │   └── config.toml                # Streamlit configuration
+│
 ├── requirements.txt               # Application dependencies
-├── requirements-dev.txt           # Notebook/development dependencies
-└── README.md
+├── requirements-dev.txt           # Development dependencies
+├── RUNNING_THE_PROJECT.md         # Execution instructions
+├── setup_env.ps1                  # Windows environment setup
+├── setup_env.sh                   # Unix/Git Bash environment setup
+└── README.md                      # Project documentation
 ```
 
 ### Running the Application
 
 ```bash
-git clone <repository-url>
-cd risk-credit-scoring-new
+git clone https://github.com/HTOUYEM/risk-credit-scoring.git
+cd risk-credit-scoring
 
 python -m venv .venv
 source .venv/Scripts/activate
