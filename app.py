@@ -648,9 +648,8 @@ st.caption(
 )
 
 
-with st.form(
-    "credit_risk_form"
-):
+# Regular container: widgets rerun immediately, enabling live validation.
+with st.container():
 
     # =========================================================================
     # 1. Loan Information
@@ -764,6 +763,26 @@ with st.form(
                     "to the loan."
                 ),
             )
+
+        loan_information_errors = []
+
+        if loan_amnt <= 0:
+            loan_information_errors.append(
+                "Loan Amount must be greater than zero."
+            )
+
+        if funded_amnt > loan_amnt:
+            loan_information_errors.append(
+                "Funded Amount cannot exceed Loan Amount."
+            )
+
+        if funded_amnt_inv > funded_amnt:
+            loan_information_errors.append(
+                "Investor Funded Amount cannot exceed Funded Amount."
+            )
+
+        for error in loan_information_errors:
+            st.error(f"⚠️ {error} Please correct this value before continuing.")
 
 
     # =========================================================================
@@ -995,6 +1014,16 @@ with st.form(
                 ),
             )
 
+        credit_profile_errors = []
+
+        if open_acc > total_acc:
+            credit_profile_errors.append(
+                "Open Credit Accounts cannot exceed Total Credit Accounts."
+            )
+
+        for error in credit_profile_errors:
+            st.error(f"⚠️ {error} Please correct this value before continuing.")
+
 
     # =========================================================================
     # 4. Credit History & Adverse Events
@@ -1173,6 +1202,20 @@ with st.form(
                 ),
             )
 
+        date_consistency_errors = []
+
+        if (
+            issue_d is not None
+            and earliest_cr_line is not None
+            and earliest_cr_line > issue_d
+        ):
+            date_consistency_errors.append(
+                "Earliest Credit Line cannot be later than Loan Issue Date."
+            )
+
+        for error in date_consistency_errors:
+            st.error(f"⚠️ {error} Please correct the dates before continuing.")
+
 
     # =========================================================================
     # 6. Collections, Delinquency & Total Credit Exposure
@@ -1262,9 +1305,23 @@ with st.form(
 
     st.write("")
 
-    submitted = st.form_submit_button(
+    live_validation_errors = (
+        loan_information_errors
+        + credit_profile_errors
+        + date_consistency_errors
+    )
+
+    if live_validation_errors:
+        st.warning(
+            "Please correct the highlighted consistency issue(s) above "
+            "before running the credit-risk assessment."
+        )
+
+    submitted = st.button(
         "🛡️  ASSESS CREDIT RISK  →",
         use_container_width=True,
+        disabled=bool(live_validation_errors),
+        type="primary",
     )
 
 
@@ -1821,3 +1878,57 @@ if submitted:
             st.exception(
                 error
             )
+# =============================================================================
+# Project Footer
+# =============================================================================
+
+st.divider()
+
+st.html(
+    """
+    <div style="
+        text-align: center;
+        color: #627D98;
+        padding: 1.5rem 0 1rem 0;
+    ">
+
+        <div style="
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #173F5F;
+        ">
+            Credit Risk Scoring — Portfolio Project
+        </div>
+
+        <div style="margin-top: 0.5rem;">
+            Developed by <strong>Hilaire Touyem</strong> &
+            <strong>Franklin Platini Agouanet</strong>
+        </div>
+
+        <div style="margin-top: 0.6rem;">
+            <a
+                href="https://github.com/HTOUYEM/risk-credit-scoring"
+                target="_blank"
+                style="
+                    color: #0F766E;
+                    text-decoration: none;
+                    font-weight: 700;
+                "
+            >
+                View Project on GitHub
+            </a>
+        </div>
+
+        <div style="
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: #829AB1;
+        ">
+            Educational and portfolio project. Model outputs are provided
+            for analytical demonstration purposes and should not be used
+            as the sole basis for real-world lending decisions.
+        </div>
+
+    </div>
+    """
+)
