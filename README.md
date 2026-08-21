@@ -139,7 +139,7 @@ The application combines model prediction, scoring, risk visualization, and borr
        width="90%">
 </p>
 
-**Live Application:** _link to be added after deployment_
+**Live Application:** (https://risk-credit-scoring-2026-08.streamlit.app/)
 
 
 ## Repository Structure & Reproducibility
