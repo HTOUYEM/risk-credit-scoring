@@ -218,3 +218,14 @@ Future work will extend the framework toward a more comprehensive credit-risk mo
 Further extensions could explore the integration of these risk components within broader **IFRS 9 credit-risk modeling considerations**, including expected credit loss assessment and model monitoring.
 
 > **Disclaimer:** The scores, risk grades, and predictions produced by this project should not be interpreted as actual lending recommendations.
+
+## License
+
+Copyright © 2026 Hilaire Touyem and Franklin Platini Agouanet.
+
+This project is publicly available for educational, demonstration, recruitment,
+and portfolio purposes. Reproduction, modification, redistribution, or
+commercial use is not permitted without prior written authorization from the
+authors.
+
+See the [LICENSE](LICENSE) file for details.
