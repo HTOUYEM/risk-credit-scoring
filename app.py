@@ -1878,3 +1878,57 @@ if submitted:
             st.exception(
                 error
             )
+# =============================================================================
+# Project Footer
+# =============================================================================
+
+st.divider()
+
+st.html(
+    """
+    <div style="
+        text-align: center;
+        color: #627D98;
+        padding: 1.5rem 0 1rem 0;
+    ">
+
+        <div style="
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #173F5F;
+        ">
+            Credit Risk Scoring — Portfolio Project
+        </div>
+
+        <div style="margin-top: 0.5rem;">
+            Developed by <strong>Hilaire Touyem</strong> &
+            <strong>Franklin Platini Agouanet</strong>
+        </div>
+
+        <div style="margin-top: 0.6rem;">
+            <a
+                href="https://github.com/HTOUYEM/risk-credit-scoring"
+                target="_blank"
+                style="
+                    color: #0F766E;
+                    text-decoration: none;
+                    font-weight: 700;
+                "
+            >
+                View Project on GitHub
+            </a>
+        </div>
+
+        <div style="
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: #829AB1;
+        ">
+            Educational and portfolio project. Model outputs are provided
+            for analytical demonstration purposes and should not be used
+            as the sole basis for real-world lending decisions.
+        </div>
+
+    </div>
+    """
+)
